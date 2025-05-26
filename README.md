@@ -1,5 +1,9 @@
 # Linux - Brief Introduction
 
+## Topics
+
+- [Shell Scripting](/Shell-Scripting/ShellScript.md)
+
 ## What is Linux?
 Linux is an **open-source**, **Unix-like** operating system kernel first released by **Linus Torvalds** in 1991. It's the core component of many operating system distributions.
 
