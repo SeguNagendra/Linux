@@ -1,0 +1,128 @@
+Variables and Environment Variables in Linux
+Overview
+Variables in Linux are used to store data and configuration settings. They can be categorized by their scope (who can access them) and their lifetime (how long they persist).
+
+Table of Contents
+Categorized by Scope & Lifetime
+
+Categorized by Function
+
+Practical Demonstration
+
+Managing Variables
+
+Summary
+
+1. Categorized by Scope & Lifetime
+Type	Lifetime & Scope	How to Set	How to View	Purpose
+Local Shell Variable	Temporary. Lasts only for the current shell session. Not inherited by child processes.	MY_VAR="value"	set | grep MY_VAR	Temporary data, loop counters, calculations within current shell session.
+Environment Variable	Temporary. Lasts for current shell session and is inherited by all child processes.	export MY_VAR="value" or MY_VAR="value" then export MY_VAR	env | grep MY_VAR or printenv MY_VAR	Configure environment for shell and other programs.
+"Permanent" User-level	Persistent across logins. Defined in user startup files.	Add export MY_VAR="value" to ~/.bashrc or ~/.profile	Available in new shell sessions	Personal preferences and environment variables.
+"Permanent" System-wide	Persistent for all users. Defined in system startup files.	Add export MY_VAR="value" to /etc/environment or /etc/profile.d/my_vars.sh	Available to all users	System-wide configuration settings.
+2. Categorized by Function
+Type	Description	Common Examples
+Standard Environment Variables	Pre-defined by shell and system to configure environment.	USER, HOME, PWD, SHELL, LANG, TERM
+Path Variables	Contain colon-separated lists of directories.	PATH, LD_LIBRARY_PATH, MANPATH
+Application Configuration	Control behavior of specific programs.	EDITOR, BROWSER, http_proxy, JAVA_HOME, PS1
+Positional Parameters	Hold arguments passed to shell scripts (shell variables, not environment).	$0, $1, $2, $@
+Special Shell Variables	Pre-defined shell variables for script control.	$$, $?, $#
+3. Practical Demonstration
+Temporary Variables (Last until shell is closed)
+bash
+# Create a local shell variable (not exported)
+MY_TEMP_VAR="I will vanish when this shell closes"
+echo $MY_TEMP_VAR
+
+# Create an environment variable (exported, inherited by children)
+export MY_TEMP_ENV_VAR="I will also vanish, but my children will know me"
+echo $MY_TEMP_ENV_VAR
+
+# Test inheritance in child process
+bash
+echo "Child sees: $MY_TEMP_ENV_VAR" # This will work
+echo "Child sees: $MY_TEMP_VAR"     # This will be empty
+exit # return to parent shell
+"Permanent" Variables (Survive shell restarts)
+For a User:
+
+bash
+# Edit user's bash configuration
+nano ~/.bashrc
+
+# Add to bottom of file:
+export PATH="$HOME/bin:$PATH"
+export EDITOR="nano"
+
+# Load changes into current shell
+source ~/.bashrc
+For the Whole System:
+
+bash
+# Create system-wide configuration (requires sudo)
+sudo nano /etc/profile.d/jdk_home.sh
+
+# Add content:
+export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+export PATH="$JAVA_HOME/bin:$PATH"
+4. Managing Variables
+Viewing Variables
+All variables: set
+
+Environment variables only: env or printenv
+
+Specific variable: echo $VARIABLE_NAME (e.g., echo $HOME)
+
+Removing Variables
+bash
+# Remove any variable (shell or environment)
+unset MY_VAR
+Common Environment Variables
+USER: Current logged-in user
+
+HOME: Path to user's home directory
+
+PWD: Present working directory
+
+PATH: Directories where shell looks for commands
+
+SHELL: Path to current shell program
+
+EDITOR: Default text editor
+
+5. Summary
+Variable Lifetime Flowchart
+text
+Define variable in terminal
+        |
+        v
+Exported with `export`?
+        |
++-------+-------+
+|               |
+No              Yes
+|               |
+v               v
+Shell Variable  Environment Variable
+(Local)         (Global for children)
+|               |
+|               |
++-------+-------+
+        |
+        v
+Dies with shell session
+        |
+        |
+Define in startup file for persistence:
+  - User: ~/.bashrc, ~/.profile
+  - System: /etc/profile.d/, /etc/environment
+Key Points
+Shell variables are local to the current session
+
+Environment variables are inherited by child processes
+
+"Permanent" variables are automatically recreated from startup files
+
+Use export to make variables available to child processes
+
+Use startup files (~/.bashrc, /etc/profile.d/) for persistence
+
