@@ -702,3 +702,5 @@ find . -type f -perm 0777         # Find files with 777 perms
 chmod -R 755 /var/www             # Recursively change permissions
 chown -R user:group /home/user    # Recursively change owner/group
 ```
+
+...
