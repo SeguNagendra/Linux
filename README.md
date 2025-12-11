@@ -703,4 +703,3 @@ chmod -R 755 /var/www             # Recursively change permissions
 chown -R user:group /home/user    # Recursively change owner/group
 ```
 
-...
